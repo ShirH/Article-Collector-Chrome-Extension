@@ -1,0 +1,3 @@
+function s(){
+    alert("xxxx")
+}

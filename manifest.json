@@ -1,0 +1,59 @@
+{
+  "manifest_version": 2,
+  "name": "Article Collector",
+  "description": "This extension save articles into the Clipboard",
+  "version": "0.1.2",
+  "background": {
+    "scripts": [
+      "chrome_localStorage.js",
+      "popup.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "Article Collector App"
+  },
+  "permissions": [
+    "storage",
+    "https://ajax.googleapis.com/",
+    "contextMenus",
+    "background",
+    "commands",
+    "tabs",
+    "activeTab",
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "web_accessible_resources": ["popup.html"],
+  "commands": {
+    "headline": {
+      "suggested_key": {
+        "default": "Alt+H"
+      },
+      "description": "Toggle feature save headline"
+    },
+    "subhead": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "Toggle feature save subhead"
+    },
+    "byline": {
+      "suggested_key": {
+        "default": "Alt+B"
+      },
+      "description": "Toggle feature save byline"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": [ "jquery-3.2.0.min.js" , "sideBar-script.js"]
+    }
+  ]
+}

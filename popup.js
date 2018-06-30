@@ -89,44 +89,44 @@ var sTextToCopy;
 function copyTextToClipBoard(oSavedItems) {
     sTextToCopy = "";
     for (var key in oSavedItems) {
+        var sSingleItemText = "";
         // skip loop if the property is from prototype
         if (!oSavedItems.hasOwnProperty(key)) continue;
         var obj = oSavedItems[key];
 
-        if (obj.headline) {
-            insetNewHtmlHeadline("<br>" + obj.headline)
-            insertNewHtmlHerfLine(key);
-        } else {
-            insertNewHtmlHerfLine("<br>" + key);
-        }
+      sSingleItemText = insertNewHtmlTextTab(sSingleItemText, obj.headline)
+      sSingleItemText = insertNewHtmlHerfTab(sSingleItemText, key)
 
-        if (obj.byline) {
-            insertNewHtmlTextLine(obj.byline)
-        }
+      sSingleItemText = insertNewHtmlTextTab(sSingleItemText, obj.byline)
 
-        if (obj.subhead) {
-            insertNewHtmlTextLine(obj.subhead + "<br><br>")
-        }
+      sSingleItemText = insertNewHtmlTextTab(sSingleItemText, obj.subhead)
+      sSingleItemText = insertNewLine(sSingleItemText)
+      sTextToCopy += sSingleItemText
     }
-    document.execCommand('copy');
+  sTextToCopy = '<table dir="ltr"> <tbody>' + sTextToCopy + '</tbody> </table>'
+  document.execCommand('copy')
 }
 
-
-function insertNewHtmlTextLine(stringToAdd) {
-    insertPLabele("<span lang='HE'> \n " + stringToAdd + " \n <o:p></o:p> \n </span>");
+function insertNewHtmlTextTab (sSingleItemText, stringToAdd) {
+  if (stringToAdd == undefined) {
+    return insertTDLabele(sSingleItemText, '<span lang=\'HE\'> \n ' + '' +
+      ' \n <o:p></o:p> \n </span>')
+  } else {
+    return insertTDLabele(sSingleItemText, "<span lang='HE'> \n " + stringToAdd + " \n <o:p></o:p> \n </span>");
+  }
 }
 
-function insertPLabele(stringToadd) {
-    sTextToCopy = sTextToCopy + "<p class='MsoNormal' dir='RTL' style='text-align:right;direction:rtl;unicode-bidi:embed'>\n" + stringToadd + " \n </p> \n";
+function insertTDLabele(sSingleItemText, stringToadd) {
+    return sSingleItemText + "<td class='MsoNormal' style='text-align:right;direction:rtl;unicode-bidi:embed'>\n" + stringToadd + " \n </td>";
 
 }
 
-function insetNewHtmlHeadline(headlineToAdd) {
-    insertPLabele("<b> \n <span lang='HE'>" + headlineToAdd + "<o:p></o:p></span>\n</b>\n");
+function insertNewLine(sSingleItemText) {
+  return '<tr>' + sSingleItemText + '</tr>';
 }
 
-function insertNewHtmlHerfLine(sLinkToAdd) {
-    insertNewHtmlTextLine("<a href=" + sLinkToAdd + "><span dir='LTR'>" + sLinkToAdd + "</span></a>");
+function insertNewHtmlHerfTab(sSingleItemText, sLinkToAdd) {
+    return insertNewHtmlTextTab(sSingleItemText, "<a href=" + sLinkToAdd + "><span dir='LTR'>" + sLinkToAdd + "</span></a>");
 }
 
 function clearData() {
@@ -196,5 +196,3 @@ function creatContextMenues() {
 //        chrome.tabs.sendMessage(tabs[0].id, "toggleArticleCollectorSideBar");
 //    })
 //});
-
-
